@@ -8,6 +8,7 @@ Getting weather over the globe by coordinates
 
 import pyowm
 import time
+import pandas as pd
 
 coord_list=[]
 temperature_list=[]
@@ -32,9 +33,15 @@ temp_list=[]
 while i<len(coord_list):
     observation = owm.weather_at_coords(coord_list[i][0],coord_list[i][1])
     w = observation.get_weather()
-    temp_list=w.get_temperature('celsius')  # {'temp_max': 10.5, 'temp': 9.7, 'temp_min': 9.0}
-    temperature_list.append(temp_list['temp'])
-    time.sleep(1)
+    temp_list=w.get_temperature('celsius')# {'temp_max': 10.5, 'temp': 9.7, 'temp_min': 9.0}
+    del temp_list['temp_max']
+    del temp_list['temp_min']
+    del temp_list['temp_kf']
+    temp_list['latitude']=coord_list[i][0]
+    temp_list['longitude']=coord_list[i][1]
+    temperature_list.append(temp_list)
+    time.sleep(2)
     temp_list=[]
     i = i+1
+
     
